@@ -1,4 +1,4 @@
-package Atlanta;
+package Dallas;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -26,7 +26,7 @@ public class Consumer2 {
     properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:29092");
     properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
     properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-    properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "AtlantaGroup");
+    properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "DallasGroup");
     properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
     // CREATE CONSUMER FROM CURRENT PROPERTIES
     KafkaConsumer<String, String> consumer2 = new KafkaConsumer<String, String>(properties);

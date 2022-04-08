@@ -1,4 +1,4 @@
-package Atlanta;
+package Dallas;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -9,7 +9,6 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.TopicPartition;
-import org.apache.kafka.common.internals.Topic;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,14 +19,14 @@ public class Consumer0 {
   private static final Logger logger = LoggerFactory.getLogger(Consumer0.class);
 
   // CREATE ATLANTA CONSUMER PROPERTIES, CREATE CONSUMER AND RETURN CONSUMER
-  public static KafkaConsumer<String,String> createAtlantaConsumer() {
+  public static KafkaConsumer<String,String> createDallasConsumer() {
     // INITIALIZE PROPERTIES
     Properties properties = new Properties();
     // SET PROPERTIES
     properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:29092");
     properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
     properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-    properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "AtlantaGroup");
+    properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "DallasGroup");
     properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
     // CREATE CONSUMER FROM CURRENT PROPERTIES
     KafkaConsumer<String, String> consumer0 = new KafkaConsumer<String, String>(properties);
@@ -37,7 +36,7 @@ public class Consumer0 {
 
   public static void runConsumer() {
     // CREATE CONSUMER
-    KafkaConsumer<String, String> consumer0 = createAtlantaConsumer();
+    KafkaConsumer<String, String> consumer0 = createDallasConsumer();
 
     // DESCRIBE DESIRED TOPIC AND PARTITIONS
     TopicPartition atlantaGaTopic0 = new TopicPartition("AtlantaGaTopic", 0);
