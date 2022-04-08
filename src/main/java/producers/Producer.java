@@ -14,7 +14,6 @@ import java.util.concurrent.ExecutionException;
 
 public class Producer {
 
-
     private static final NewTopic topic0 = new NewTopic("NewSimpleTopic0",3, (short) 2);
     private static final NewTopic topic1 = new NewTopic("NewSimpleTopic1",3, (short) 2);
 
