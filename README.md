@@ -6,11 +6,11 @@
 ```sh
 zookeeper-server-start.bat config/zookeeper.properties
 ```
-- Start Kafka
+- Start Broker
 ```sh
 kafka-server-start.bat config/server.properties
 ```
-- Start Broker
+- Read Details Regarding <TOPIC_NAME>
 ```sh
 kafka-topics.bat --describe --bootstrap-server localhost:9092 --topic <TOPIC_NAME>
 ```
