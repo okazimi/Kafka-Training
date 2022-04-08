@@ -7,6 +7,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
@@ -26,9 +27,22 @@ public class Producer {
 
         KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties);
 
+        String customKey = "Batch";
+        String customValue0 = "firstBatch";
+        String customValue1 = "secondBatch";
+
         for(int i = 0; i < 10; i++){
             ProducerRecord<String, String> record0 = new ProducerRecord<String, String>(topic0.name(), "first " + i);
             ProducerRecord<String, String> record1 = new ProducerRecord<String, String>(topic1.name(), "second " + i);
+
+
+            if(i <= 5){
+                record0.headers().add(customKey,customValue0.getBytes());
+                record1.headers().add(customKey,customValue0.getBytes());
+            }else {
+                record0.headers().add(customKey,customValue1.getBytes());
+                record1.headers().add(customKey,customValue1.getBytes());
+            }
 
             Thread.sleep(1000);
 

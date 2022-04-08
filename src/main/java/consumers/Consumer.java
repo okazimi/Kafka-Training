@@ -5,6 +5,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.TopicPartition;
+import org.apache.kafka.common.header.Header;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,11 +40,13 @@ public class Consumer {
         while(true) {
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
             for(ConsumerRecord<String, String> record : records) {
+                Header customHeader = record.headers().iterator().next();
                 log.info("Topic: " + record.topic());
                 log.info("Key: " + record.key());
                 log.info("Value: " + record.value());
                 log.info("Partition: " + record.partition());
                 log.info("Offset: " + record.offset());
+                log.info("Custom key: " +  new String(customHeader.key()) + " Custom value: " + new String(customHeader.value()));
             }
         }
     }
