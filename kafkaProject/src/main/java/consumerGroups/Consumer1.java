@@ -1,4 +1,4 @@
-package consumer;
+package consumerGroups;
 
 
 import org.apache.kafka.clients.consumer.*;
@@ -12,16 +12,16 @@ import java.util.Arrays;
 import java.util.Properties;
 
 
-public class Consumer {
+public class Consumer1 {
 
-    private static final Logger log = LoggerFactory.getLogger(Consumer.class.getSimpleName());
+    private static final Logger log = LoggerFactory.getLogger(Consumer1.class.getSimpleName());
 
     public static void main(String[] args) {
 
         log.info("I am a Kafka Consumer");
 
         String bootstrapServer = "127.0.0.1:9092";
-        String groudId = "my-temperature-application";
+        String groudId = "my-other-temperature-application";
         String topicName1 = "new_temperature";
         String topicName2 = "new_temperature_1";
 
@@ -38,8 +38,8 @@ public class Consumer {
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);
 
         // Specify Topics & Partition
-        TopicPartition topic1 = new TopicPartition(topicName1, 0);
-        TopicPartition topic2 = new TopicPartition(topicName2, 0);
+        TopicPartition topic1 = new TopicPartition(topicName1, 1);
+        TopicPartition topic2 = new TopicPartition(topicName2, 1);
 
         consumer.assign(Arrays.asList(topic1, topic2));
 

@@ -32,10 +32,12 @@ public class Producer {
         //        kafka-topics.bat --describe --bootstrap-server localhost:9092 --topic new_temperature
 
         //create topic
-        String topicName = "new_temperature";
+        String topicName1 = "new_temperature";
+        String topicName2 = "new_temperature_1";
         int partitions = 3;
         short replicationFactor = 1;
-        NewTopic newTopic = new NewTopic(topicName, partitions, replicationFactor);
+        NewTopic firstTopic = new NewTopic(topicName1, partitions, replicationFactor);
+        NewTopic secondTopic = new NewTopic(topicName2, partitions, replicationFactor);
 
         log.info("The temperature producer");
 
@@ -61,19 +63,22 @@ public class Producer {
         //create the topic
         try
         {
-            //check to see if topic exists
-            admin.describeTopics(Collections.singleton(newTopic.name())).topicNameValues().get(newTopic.name()).get();
-            // CREATE HASHMAP TO INSERT NEW PARTITIONS (TOPIC, PARTITION COUNT)
-            Map<String, NewPartitions> numOfPartitions = new HashMap<>();
-            // INSERT THE DESIRED TOPIC AND PARTITION INCREASE
-            numOfPartitions.putIfAbsent(newTopic.name(), NewPartitions.increaseTo(5));
-            // CREATE NEW PARTITION COUNT
-            admin.createPartitions(numOfPartitions);
+            //check to see if topics exist
+            admin.describeTopics(Collections.singleton(firstTopic.name())).topicNameValues().get(firstTopic.name()).get();
+            admin.describeTopics(Collections.singleton(secondTopic.name())).topicNameValues().get(secondTopic.name()).get();
+
+//            // CREATE HASHMAP TO INSERT NEW PARTITIONS (TOPIC, PARTITION COUNT)
+//            Map<String, NewPartitions> numOfPartitions = new HashMap<>();
+//            // INSERT THE DESIRED TOPIC AND PARTITION INCREASE
+//            numOfPartitions.putIfAbsent(firstTopic.name(), NewPartitions.increaseTo(5));
+//            // CREATE NEW PARTITION COUNT
+//            admin.createPartitions(numOfPartitions);
         }
         catch (ExecutionException e)
         {
             //if topic doesn't exist, create a brilliant topic- with custom # of partitions
-            admin.createTopics(Collections.singleton(newTopic));
+            admin.createTopics(Collections.singleton(firstTopic));
+            admin.createTopics(Collections.singleton(secondTopic));
             e.printStackTrace();
         }
         catch (InterruptedException e)
@@ -105,12 +110,12 @@ public class Producer {
                 headerValue = "high";
                 partition = 2;
             }
-            ProducerRecord<String, String> producerRecord =
-                    new ProducerRecord<>(newTopic.name(),partition, null, "temperature is " + randTemp + " degrees at " + tempTime);
-            producerRecord.headers()
+            ProducerRecord<String, String> firstProducerRecord =
+                    new ProducerRecord<>(firstTopic.name(),partition, null, "temperature is " + randTemp + " degrees at " + tempTime);
+            firstProducerRecord.headers()
                     .add(headerKey, headerValue.getBytes());
 
-            producer.send(producerRecord, new Callback()
+            producer.send(firstProducerRecord, new Callback()
             {
                 @Override
                 public void onCompletion(RecordMetadata metadata, Exception e)
@@ -118,10 +123,10 @@ public class Producer {
                     if(e == null){
                         log.info("Reciceved new temperature data \n" +
                                  "topic: " + metadata.topic() + "\n" +
-                                 "value: " + producerRecord.value() + "\n" +
+                                 "value: " + firstProducerRecord.value() + "\n" +
                                  "Partition: " + metadata.partition() + "\n" +
                                  "Offset: " + metadata.timestamp() + "\n" +
-                                 "Headers: " + new String(producerRecord.headers().iterator().next().value()));
+                                 "Headers: " + new String(firstProducerRecord.headers().iterator().next().value()));
                     }
                 }
             });
@@ -130,6 +135,26 @@ public class Producer {
                 Thread.sleep(1000);
             }catch(InterruptedException e){
                 e.printStackTrace();
+            } finally {
+                ProducerRecord<String, String> secondProducerRecord =
+                        new ProducerRecord<>(secondTopic.name(),partition, null, "temperature is " + randTemp + " degrees at " + tempTime);
+                secondProducerRecord.headers()
+                        .add(headerKey, headerValue.getBytes());
+                producer.send(secondProducerRecord, new Callback()
+                {
+                    @Override
+                    public void onCompletion(RecordMetadata metadata, Exception e)
+                    {
+                        if(e == null){
+                            log.info("Reciceved new temperature data \n" +
+                                    "topic: " + metadata.topic() + "\n" +
+                                    "value: " + secondProducerRecord.value() + "\n" +
+                                    "Partition: " + metadata.partition() + "\n" +
+                                    "Offset: " + metadata.timestamp() + "\n" +
+                                    "Headers: " + new String(secondProducerRecord.headers().iterator().next().value()));
+                        }
+                    }
+                });
             }
         }
 

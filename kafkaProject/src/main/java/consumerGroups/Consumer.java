@@ -1,4 +1,5 @@
-package consumer;
+package consumerGroups;
+
 
 
 import org.apache.kafka.clients.consumer.*;
@@ -14,14 +15,14 @@ import java.util.Properties;
 
 public class Consumer {
 
-    private static final Logger log = LoggerFactory.getLogger(Consumer.class.getSimpleName());
+    private static final Logger log = LoggerFactory.getLogger(consumer.Consumer.class.getSimpleName());
 
     public static void main(String[] args) {
 
         log.info("I am a Kafka Consumer");
 
         String bootstrapServer = "127.0.0.1:9092";
-        String groudId = "my-temperature-application";
+        String groudId = "my-other_temperature-application";
         String topicName1 = "new_temperature";
         String topicName2 = "new_temperature_1";
 
@@ -55,3 +56,4 @@ public class Consumer {
 
 
 }
+

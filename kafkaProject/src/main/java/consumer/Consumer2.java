@@ -12,9 +12,9 @@ import java.util.Arrays;
 import java.util.Properties;
 
 
-public class Consumer {
+public class Consumer2 {
 
-    private static final Logger log = LoggerFactory.getLogger(Consumer.class.getSimpleName());
+    private static final Logger log = LoggerFactory.getLogger(Consumer2.class.getSimpleName());
 
     public static void main(String[] args) {
 
@@ -38,8 +38,8 @@ public class Consumer {
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);
 
         // Specify Topics & Partition
-        TopicPartition topic1 = new TopicPartition(topicName1, 0);
-        TopicPartition topic2 = new TopicPartition(topicName2, 0);
+        TopicPartition topic1 = new TopicPartition(topicName1, 2);
+        TopicPartition topic2 = new TopicPartition(topicName2, 2);
 
         consumer.assign(Arrays.asList(topic1, topic2));
 
