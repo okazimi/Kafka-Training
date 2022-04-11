@@ -1,3 +1,5 @@
+package simple.producer.consumer;
+
 import java.util.Collections;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
