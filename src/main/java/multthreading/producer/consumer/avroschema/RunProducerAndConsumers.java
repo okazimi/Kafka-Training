@@ -2,7 +2,6 @@ package multthreading.producer.consumer.avroschema;
 
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -22,7 +21,8 @@ public class RunProducerAndConsumers {
 
   // INITIALIZE VARIABLES
   private final static int PARTITION_COUNT = 3;
-  private final static String TOPIC_NAME = "multithreading-regex";
+  private final static String TOPIC_NAME1 = "multithreading-regex";
+  private final static String TOPIC_NAME2 = "another-multithreading-regex";
   private final static int MSG_COUNT = 4;
   private static int totalMsgToSend;
   private static AtomicInteger msg_received_counter = new AtomicInteger(0);
@@ -30,7 +30,9 @@ public class RunProducerAndConsumers {
   // MULTI-THREADING CONSUMERS FUNCTION
   public static void run(int consumerCount, String[] consumerGroups) throws InterruptedException, ExecutionException {
     // CHECK TOPIC CREATION
-    TopicCreator.createTopic(TOPIC_NAME, PARTITION_COUNT);
+    TopicCreator.createTopic(TOPIC_NAME1, PARTITION_COUNT);
+    // CHECK TOPIC CREATION
+    TopicCreator.createTopic(TOPIC_NAME2, PARTITION_COUNT);
     // USE TREE SET THAT EXTENDS SET INTERFACE TO COUNT THE NUMBER OF DISTINCT GROUPS A.K.A DOES NOT COUNT DUPLICATES
     int distinctGroups = new TreeSet<>(Arrays.asList(consumerGroups)).size();
     // CALCULATE TOTAL MESSAGES TO SEND BASED ON MSGCOUNT, PARTITION COUNT, GROUPS
@@ -74,9 +76,9 @@ public class RunProducerAndConsumers {
         // INCREMENT MESSAGE RECEIVED COUNTER
         msg_received_counter.incrementAndGet();
         // PRINT OUT CONSUMER INFO
-        System.out.printf("Consumer Group: %s, Consumer ID: %s, Partition ID = %s, Key = %s, Value = %s"
-                + ", Offset = %s%n",
-            consumerGroup, consumerId, record.partition(), record.key(), record.value(), record.offset());
+        System.out.printf("%nConsumer Info %nConsumer Group: %s%n Consumer ID: %s%n Topic: %s%n Partition ID = %s%n Key = %s%n Value = %s%n"
+                + " Offset = %s%n",
+            consumerGroup, consumerId, record.topic(), record.partition(), record.key(), record.value(), record.offset());
       }
       // SYNCHRONOUS OFFSET COMMIT
       consumer.commitSync();
@@ -104,11 +106,14 @@ public class RunProducerAndConsumers {
         // INCREMENTAL KEY VALUE
         key++;
         // PRINT OUT INFORMATION TO BE SENT
-        System.out.printf("Sending message to Topic: %s, Key: %s, Value: %s, Partition ID: %s%n", TOPIC_NAME, key, avroRecord, partitionId);
+        System.out.printf("%nSending Message%nTopic: %s%n Key: %s%n Value: %s%n Partition ID: %s%n", TOPIC_NAME1, key, avroRecord, partitionId);
+        System.out.printf("%nSending Message%nTopic: %s%n Key: %s%n Value: %s%n Partition ID: %s%n", TOPIC_NAME2, key, avroRecord, partitionId);
 
         try{
           // SEND RECORD
-          producer.send(new ProducerRecord<>(TOPIC_NAME, partitionId, Integer.toString(key), avroRecord));
+          producer.send(new ProducerRecord<>(TOPIC_NAME1, partitionId, Integer.toString(key), avroRecord));
+          // SEND RECORD
+          producer.send(new ProducerRecord<>(TOPIC_NAME2, partitionId, Integer.toString(key), avroRecord));
         } catch (SerializationException e) {
           System.out.println("Error in sending message");
           e.printStackTrace();

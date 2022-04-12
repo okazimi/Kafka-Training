@@ -18,9 +18,9 @@ simple/producer/consumer/Producer.java
  simple.producer.consumer.Producer
  simple.producer.consumer.Producer$1
  simple.producer.consumer.Producer$2
-multthreading/producer/consumer/avroschema/RunningConsumersWithDifferentGroups.java
- multthreading.producer.consumer.avroschema.RunningConsumersWithDifferentGroups
 multthreading/producer/consumer/avroschema/ProducerAndConsumerProperties.java
  multthreading.producer.consumer.avroschema.ProducerAndConsumerProperties
+multthreading/producer/consumer/avroschema/RunningConsumersWithDifferentGroups.java
+ multthreading.producer.consumer.avroschema.RunningConsumersWithDifferentGroups
 multthreading/producer/consumer/avroschema/RunProducerAndConsumers.java
  multthreading.producer.consumer.avroschema.RunProducerAndConsumers
