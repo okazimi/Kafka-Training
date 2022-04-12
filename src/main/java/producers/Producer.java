@@ -4,6 +4,7 @@ import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import properties.HelperClass;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,12 +19,10 @@ public class Producer {
     private static final NewTopic topic1 = new NewTopic("NewSimpleTopic1",3, (short) 2);
 
     public static void main(String args[]) throws IOException, ExecutionException, InterruptedException {
-        FileReader reader = new FileReader("src/main/resources/application.properties");
-        Properties properties = new Properties();
-        properties.load(reader);
+        Properties properties = HelperClass.getProducerProperties();
 
-        createTopic(topic0,properties);
-        createTopic(topic1,properties);
+        HelperClass.createTopic(topic0);
+        HelperClass.createTopic(topic1);
 
         KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties);
 
@@ -52,13 +51,6 @@ public class Producer {
         }
 
         producer.close();
-    }
-
-    private static void createTopic(NewTopic topic, Properties properties) throws ExecutionException, InterruptedException {
-        AdminClient admin = AdminClient.create(properties);
-        if(!admin.listTopics().names().get().stream().anyMatch(expectedTopic->expectedTopic.equals(topic.name()))){
-            admin.createTopics(Collections.singleton(topic));
-        }
     }
 
 }

@@ -8,6 +8,7 @@ import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.header.Header;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import properties.HelperClass;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -25,9 +26,7 @@ public class Consumer {
     public static void main(String args[]) throws IOException {
         final String TOPIC0 = args[1];
         final String TOPIC1 = args[2];
-        FileReader reader = new FileReader("src/main/resources/application.properties");
-        Properties properties = new Properties();
-        properties.load(reader);
+        Properties properties = HelperClass.getConsumerProperties();
         properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, args[0]);
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(properties);
