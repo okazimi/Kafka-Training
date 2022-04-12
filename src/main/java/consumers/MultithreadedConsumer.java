@@ -10,6 +10,7 @@ import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.header.Header;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import properties.HelperClass;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -31,15 +32,22 @@ public class MultithreadedConsumer {
     }
 
     public static void run(int consumerCount) throws InterruptedException {
+        // First half of consumers are in group "consumerGroup0"
         int currentGroup = 0;
+
+        // Create threads for each consumer
         ExecutorService executorService = Executors.newFixedThreadPool(consumerCount+1);
+
         for (int i = 0; i < consumerCount; i++) {
+            // Second half of consumers are in group "consumerGroup1"
             if(i >= consumerCount/2)
                 currentGroup = 1;
             int finalCurrentGroup = currentGroup;
+
+            // Pass startConsumer method as argument of executorService.execute()
             executorService.execute(() -> {
                 try {
-                    startConsumer("consumerGroup" + finalCurrentGroup);
+                    startConsumer("consumerGroup" + finalCurrentGroup); // Pass consumer group id to startConsumer()
                 } catch (IOException | ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -49,29 +57,29 @@ public class MultithreadedConsumer {
         executorService.awaitTermination(10, TimeUnit.MINUTES);
     }
     private static void startConsumer(String consumerGroup) throws IOException, ExecutionException, InterruptedException {
-
-        //final String TOPIC0 = "NewSimpleTopic0";
-        //final String TOPIC1 = "NewSimpleTopic1";
-
-        FileReader reader = new FileReader("src/main/resources/application.properties");
-        Properties properties = new Properties();
-        properties.load(reader);
+        // Set consumer properties
+        Properties properties = HelperClass.getConsumerProperties();
         properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, consumerGroup);
 
+        // Set options for topics
         NewTopic topic0 = new NewTopic("NewSimpleTopic0",3, (short) 2);
         NewTopic topic1 = new NewTopic("NewSimpleTopic1",3, (short) 2);
 
-        createTopic(topic0,properties);
-        createTopic(topic1,properties);
+        // Create topics if they don't exist
+        HelperClass.createTopic(topic0);
+        HelperClass.createTopic(topic1);
 
+        // Initialize consumer
         KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(properties);
 
-        //consumer.assign(Collections.singleton(new TopicPartition(TOPIC, Integer.parseInt(args[2]))));
-        //consumer.assign(Arrays.asList(zerothTopic,firstTopics));
+        // Subscribe to topics
         consumer.subscribe(Arrays.asList(topic0.name(),topic1.name()));
 
         while(true) {
+            // Poll for new records
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
+
+            // Log records
             for(ConsumerRecord<String, String> record : records) {
                 Header customHeader = record.headers().iterator().next();
                 log.info(Thread.currentThread().getName() + "\n" +
@@ -85,10 +93,4 @@ public class MultithreadedConsumer {
         }
     }
 
-    private static void createTopic(NewTopic topic, Properties properties) throws ExecutionException, InterruptedException {
-        AdminClient admin = AdminClient.create(properties);
-        if(!admin.listTopics().names().get().stream().anyMatch(expectedTopic->expectedTopic.equals(topic.name()))){
-            admin.createTopics(Collections.singleton(topic));
-        }
-    }
 }
