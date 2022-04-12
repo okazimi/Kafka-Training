@@ -34,6 +34,7 @@ public class ProducerAndConsumerProperties {
     properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, consumerGroup);
     properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
     properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class.getName());
+    properties.setProperty(ConsumerConfig.METADATA_MAX_AGE_CONFIG, "5000");
     properties.setProperty("schema.registry.url", "http://127.0.0.1:8081");
     // RETURN PROPERTIES
     return properties;

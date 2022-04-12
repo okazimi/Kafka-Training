@@ -1,7 +1,7 @@
 simple/producer/consumer/Dallas/Consumer0.java
  simple.producer.consumer.Dallas.Consumer0
-multthreading/producer/consumer/avroschema/ProducerAndConsumerProperties.java
- multthreading.producer.consumer.avroschema.ProducerAndConsumerProperties
+simple/producer/consumer/Atlanta/Consumer1.java
+ simple.producer.consumer.Atlanta.Consumer1
 multthreading/producer/consumer/avroschema/AvroSchemaRegistry.java
  multthreading.producer.consumer.avroschema.AvroSchemaRegistry
 simple/producer/consumer/Dallas/Consumer1.java
@@ -18,9 +18,9 @@ simple/producer/consumer/Producer.java
  simple.producer.consumer.Producer
  simple.producer.consumer.Producer$1
  simple.producer.consumer.Producer$2
-simple/producer/consumer/Atlanta/Consumer1.java
- simple.producer.consumer.Atlanta.Consumer1
 multthreading/producer/consumer/avroschema/RunningConsumersWithDifferentGroups.java
  multthreading.producer.consumer.avroschema.RunningConsumersWithDifferentGroups
+multthreading/producer/consumer/avroschema/ProducerAndConsumerProperties.java
+ multthreading.producer.consumer.avroschema.ProducerAndConsumerProperties
 multthreading/producer/consumer/avroschema/RunProducerAndConsumers.java
  multthreading.producer.consumer.avroschema.RunProducerAndConsumers

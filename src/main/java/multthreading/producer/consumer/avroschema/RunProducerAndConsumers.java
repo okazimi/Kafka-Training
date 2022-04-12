@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.commons.lang3.SerializationException;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -21,7 +22,7 @@ public class RunProducerAndConsumers {
 
   // INITIALIZE VARIABLES
   private final static int PARTITION_COUNT = 3;
-  private final static String TOPIC_NAME = "multithreading-topic-11";
+  private final static String TOPIC_NAME = "multithreading-regex";
   private final static int MSG_COUNT = 4;
   private static int totalMsgToSend;
   private static AtomicInteger msg_received_counter = new AtomicInteger(0);
@@ -62,8 +63,8 @@ public class RunProducerAndConsumers {
     System.out.printf("Starting consumer: %s, Group: %s%n", consumerId, consumerGroup);
     // CREATE KAFKA CONSUMER AND SET PROPERTIES FOR CONSUMER
     KafkaConsumer<String,GenericRecord> consumer = new KafkaConsumer<String,GenericRecord>(ProducerAndConsumerProperties.getConsumerProperties(consumerGroup));
-    // SUBSCRIBE TO TOPIC
-    consumer.subscribe(Collections.singleton(TOPIC_NAME));
+    // SUBSCRIBE TO TOPICS THAT COMPLY WITH PATTERN
+    consumer.subscribe(Pattern.compile("[A-Za-z1-9].+"));
     // WHILE LOOP TO POLL AND OBTAIN RECORDS
     while (true) {
       // POLL FOR 2 SECONDS AND OBTAIN RECORDS
