@@ -2,6 +2,8 @@ simple/producer/consumer/Dallas/Consumer0.java
  simple.producer.consumer.Dallas.Consumer0
 multthreading/producer/consumer/avroschema/ProducerAndConsumerProperties.java
  multthreading.producer.consumer.avroschema.ProducerAndConsumerProperties
+multthreading/producer/consumer/avroschema/AvroSchemaRegistry.java
+ multthreading.producer.consumer.avroschema.AvroSchemaRegistry
 simple/producer/consumer/Dallas/Consumer1.java
  simple.producer.consumer.Dallas.Consumer1
 multthreading/producer/consumer/avroschema/TopicCreator.java

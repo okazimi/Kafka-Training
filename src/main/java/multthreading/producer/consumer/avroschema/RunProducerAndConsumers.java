@@ -9,6 +9,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.apache.avro.generic.GenericRecord;
+import org.apache.commons.lang3.SerializationException;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -59,15 +61,15 @@ public class RunProducerAndConsumers {
     // PRINT OUT THE CURRENT CONSUMER THAT IS STARTING
     System.out.printf("Starting consumer: %s, Group: %s%n", consumerId, consumerGroup);
     // CREATE KAFKA CONSUMER AND SET PROPERTIES FOR CONSUMER
-    KafkaConsumer<String,String> consumer = new KafkaConsumer<>(ProducerAndConsumerProperties.getConsumerProperties(consumerGroup));
+    KafkaConsumer<String,GenericRecord> consumer = new KafkaConsumer<String,GenericRecord>(ProducerAndConsumerProperties.getConsumerProperties(consumerGroup));
     // SUBSCRIBE TO TOPIC
     consumer.subscribe(Collections.singleton(TOPIC_NAME));
     // WHILE LOOP TO POLL AND OBTAIN RECORDS
     while (true) {
       // POLL FOR 2 SECONDS AND OBTAIN RECORDS
-      ConsumerRecords<String,String> records = consumer.poll(Duration.ofMillis(1000));
+      ConsumerRecords<String,GenericRecord> records = consumer.poll(Duration.ofMillis(1000));
       // LOOP THROUGH EACH RECORD IN RECORDS
-      for (ConsumerRecord<String,String> record : records) {
+      for (ConsumerRecord<String,GenericRecord> record : records) {
         // INCREMENT MESSAGE RECEIVED COUNTER
         msg_received_counter.incrementAndGet();
         // PRINT OUT CONSUMER INFO
@@ -88,6 +90,8 @@ public class RunProducerAndConsumers {
   public static void sendMessages() {
     // CREATE KAFKA PRODUCER AND SET PRODUCER PROPERTIES
     KafkaProducer producer = new KafkaProducer<>(ProducerAndConsumerProperties.getProducerProperties());
+    // INITIALIZE SCHEMA AND OBTAIN INSERTABLE GENERIC RECORD
+    GenericRecord avroRecord = AvroSchemaRegistry.createSchema();
     // INITIALIZE KEY VARIABLE
     int key = 0;
     // LOOP THROUGH EACH MESSAGE
@@ -95,14 +99,22 @@ public class RunProducerAndConsumers {
       // SEND THE MESSAGE TO EACH PARTITION
       for (int partitionId = 0; partitionId < PARTITION_COUNT; partitionId++) {
         // INCREMENTAL MESSAGE TO BE SENT
-        String value = "message-" + i;
+        avroRecord.put("f1", "message-" + i);
         // INCREMENTAL KEY VALUE
         key++;
         // PRINT OUT INFORMATION TO BE SENT
-        System.out.printf("Sending message to Topic: %s, Key: %s, Value: %s, Partition ID: %s%n", TOPIC_NAME, key, value, partitionId);
-        // SEND RECORD
-        producer.send(new ProducerRecord<>(TOPIC_NAME, partitionId, Integer.toString(key), value));
+        System.out.printf("Sending message to Topic: %s, Key: %s, Value: %s, Partition ID: %s%n", TOPIC_NAME, key, avroRecord, partitionId);
+
+        try{
+          // SEND RECORD
+          producer.send(new ProducerRecord<>(TOPIC_NAME, partitionId, Integer.toString(key), avroRecord));
+        } catch (SerializationException e) {
+          System.out.println("Error in sending message");
+          e.printStackTrace();
+        }
       }
     }
+    // CLOSE AND FLUSH PRODUCER
+    producer.close();
   }
 }

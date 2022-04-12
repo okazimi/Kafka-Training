@@ -14,7 +14,7 @@ public class TopicCreator {
   public static void createTopic(String topicName, int numOfPartitions) throws ExecutionException, InterruptedException {
     // BROKER CONFIGURATION
     Properties properties = new Properties();
-    properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:29092");
+    properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
     // INITIALIZE ADMIN CLIENT
     AdminClient admin = AdminClient.create(properties);
 
@@ -37,7 +37,7 @@ public class TopicCreator {
     // DESCRIBING TOPIC
     System.out.println("-- Describing Topic --");
     // OBTAIN ALL TOPICS WITH DESCRIPTION
-    admin.describeTopics(Collections.singleton(topicName)).allTopicNames().get()
+    admin.describeTopics(Collections.singleton(topicName)).all().get()
         // FOR EACH TOPIC,DESCRIPTION
         .forEach((topic,desc) -> {
           // PRINT OUT TOPIC NAME

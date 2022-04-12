@@ -24,7 +24,7 @@ public class Producer {
     // INITIALIZE PROPERTIES VARIABLE
     Properties props = new Properties();
     // CONFIGURE KAFKA PRODUCER FACTORY PROPERTIES
-    props.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:29092");
+    props.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
     props.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
     props.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
     // RETURN PRODUCER PROPERTIES
@@ -46,9 +46,9 @@ public class Producer {
 
     try {
       // CHECK IF ATLANTAGATOPIC EXISTS A.K.A ADMIN DESCRIBE TOPICS
-      admin.describeTopics(Collections.singleton(topic.name())).topicNameValues().get(topic.name()).get();
+      admin.describeTopics(Collections.singleton(topic.name())).values().get(topic.name()).get();
       // CHECK IF DALLASTXTOPIC EXISTS A.K.A ADMIN DESCRIBE TOPICS
-      admin.describeTopics(Collections.singleton(topic1.name())).topicNameValues().get(topic1.name()).get();
+      admin.describeTopics(Collections.singleton(topic1.name())).values().get(topic1.name()).get();
 //      // CREATE HASHMAP TO INSERT NEW PARTITIONS (TOPIC, PARTITION COUNT)
 //      Map<String, NewPartitions> numOfPartitions = new HashMap<>();
 //      // INSERT THE DESIRED TOPIC AND PARTITION INCREASE
