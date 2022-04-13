@@ -41,8 +41,8 @@ localhost:3030
 ### Avro Schema Configuration
 ~~~~
 "fields": [
-  {"name": "firstField", "type": "string"},
-  {"name": "secondField", "type": "string"},
-  {"name": "thirdField", "type": "int"}
+    {"name": "TemperatureRecorded", "type": "string"},
+    {"name": "TimeRecorded", "type": "string"},
+    {"name": "Temperature", "type": "int"}
 ]
 ~~~~
