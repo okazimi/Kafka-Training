@@ -6,6 +6,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.header.Header;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import properties.HelperClass;
@@ -21,8 +22,12 @@ import java.util.regex.Pattern;
 public class AvroConsumer {
     public static final Logger log = LoggerFactory.getLogger(Consumer.class.getSimpleName());
 
+    // Set options for topics
+    private static final NewTopic topic0 = new NewTopic("topicAvroRegex",3, (short) 1);
+    private static final NewTopic topic1 = new NewTopic("newTopicAvroRegex",3, (short) 1);
+
     public static void main(String args[]) throws InterruptedException {
-        run(4);
+        run(1);
     }
 
     public static void run(int consumerCount) throws InterruptedException {
@@ -56,10 +61,6 @@ public class AvroConsumer {
         properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, consumerGroup); // Set consumer ID
         properties.put(ConsumerConfig.METADATA_MAX_AGE_CONFIG, 5000); // Set interval to check for new topics
 
-        // Set options for topics
-        NewTopic topic0 = new NewTopic("topicAvroRegex",3, (short) 1);
-        NewTopic topic1 = new NewTopic("newTopicAvroRegex",3, (short) 1);
-
         // Create topics if they don't exist
         HelperClass.createTopic(topic0);
         HelperClass.createTopic(topic1);
@@ -76,14 +77,22 @@ public class AvroConsumer {
 
             // Log records
             for(ConsumerRecord<String, TestRecord> record : records) {
-                //Header customHeader = record.headers().iterator().next();
+                // If the record is a generic record, it will have a custom header
+                Header customHeader;
+                String customHeaderText = "CustomHeader: ";
+                if(record.headers().iterator().hasNext()) {
+                    customHeader = record.headers().iterator().next();
+                    customHeaderText += ("Key: " + customHeader.key() + "Value: " + new String(customHeader.value()));
+                }else {
+                    customHeaderText += "None";
+                }
                 log.info(Thread.currentThread().getName() + "\n" +
                         "Topic: " + record.topic() + "\n" +
                         "Key: " + record.key() + "\n" +
                         "Value: " + record.value().toString() + "\n" +
                         "Partition: " + record.partition() + "\n" +
-                        "Offset: " + record.offset() + "\n");// +
-                        //"Custom key: " +  new String(customHeader.key()) + " Custom value: " + new String(customHeader.value()));
+                        "Offset: " + record.offset() + "\n" +
+                        customHeaderText + "\n");
             }
         }
     }

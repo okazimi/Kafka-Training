@@ -1,0 +1,9 @@
+properties\HelperClass.class
+com\example\TestRecord.class
+com\example\TestRecord$Builder.class
+consumers\AvroConsumer.class
+com\example\TestRecord$1.class
+producers\Producer.class
+consumers\MultithreadedConsumer.class
+producers\AvroProducer.class
+consumers\Consumer.class

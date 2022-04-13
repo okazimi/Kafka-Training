@@ -59,7 +59,7 @@ public class MultithreadedConsumer {
     private static void startConsumer(String consumerGroup) throws IOException, ExecutionException, InterruptedException {
         // Set consumer properties
         Properties properties = HelperClass.getConsumerProperties();
-        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, consumerGroup);
+        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, consumerGroup); // Set group ID
 
         // Set options for topics
         NewTopic topic0 = new NewTopic("NewSimpleTopic0",3, (short) 2);
