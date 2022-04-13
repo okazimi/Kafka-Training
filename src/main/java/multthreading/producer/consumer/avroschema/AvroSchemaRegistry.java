@@ -11,7 +11,7 @@ public class AvroSchemaRegistry {
     // CREATE SCHEMA
     String schema = "{\"type\":\"record\"," +
         "\"name\":\"myrecord\"," +
-        "\"fields\":[{\"name\":\"f1\",\"type\":\"string\"}]}";
+        "\"fields\":[{\"name\":\"f1\",\"type\":\"string\",\"default\":\"Default value for f1 field\"}]}";
 
     // INITIALIZE SCHEMA PARSER
     Schema.Parser parser = new Parser();

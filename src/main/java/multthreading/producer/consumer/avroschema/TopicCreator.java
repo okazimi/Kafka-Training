@@ -24,26 +24,26 @@ public class TopicCreator {
 
     // TOPIC ALREADY EXISTS
     if (topicAlreadyExists) {
-      System.out.printf("Topic: %s%n already exists", topicName);
+      System.out.printf("Topic: %s already exists", topicName);
     }
     // TOPIC DOES NOT EXISTS
     else {
       // CREATE TOPIC
-      System.out.printf("Creating topic: %s%n", topicName);
+      System.out.printf("Creating topic: %s", topicName);
       NewTopic newTopic = new NewTopic(topicName, numOfPartitions, (short) 1);
       admin.createTopics(Collections.singleton(newTopic)).all().get();
     }
 
     // DESCRIBING TOPIC
-    System.out.println("-- Describing Topic --");
+    System.out.printf("%n-- Describing Topic --");
     // OBTAIN ALL TOPICS WITH DESCRIPTION
     admin.describeTopics(Collections.singleton(topicName)).all().get()
         // FOR EACH TOPIC,DESCRIPTION
         .forEach((topic,desc) -> {
           // PRINT OUT TOPIC NAME
-          System.out.println("Topic: " + topic);
+          System.out.printf("%nTopic: " + topic);
            // PRINT OUT NUMBER OF PARTITIONS AND EACH PARTITION ID
-          System.out.printf("Partitions: %s, partition ids: %s%n", desc.partitions().size(),
+          System.out.printf("%nPartitions: %s, Partition ID's: %s%n%n", desc.partitions().size(),
               desc.partitions()
               .stream()
               .map(p -> Integer.toString(p.partition()))

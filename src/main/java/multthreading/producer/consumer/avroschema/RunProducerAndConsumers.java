@@ -16,6 +16,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.header.Header;
 
 public class RunProducerAndConsumers {
 
@@ -64,7 +65,7 @@ public class RunProducerAndConsumers {
     // PRINT OUT THE CURRENT CONSUMER THAT IS STARTING
     System.out.printf("Starting consumer: %s, Group: %s%n", consumerId, consumerGroup);
     // CREATE KAFKA CONSUMER AND SET PROPERTIES FOR CONSUMER
-    KafkaConsumer<String,GenericRecord> consumer = new KafkaConsumer<String,GenericRecord>(ProducerAndConsumerProperties.getConsumerProperties(consumerGroup));
+    KafkaConsumer<String,GenericRecord> consumer = new KafkaConsumer<>(ProducerAndConsumerProperties.getConsumerProperties(consumerGroup));
     // SUBSCRIBE TO TOPICS THAT COMPLY WITH PATTERN
     consumer.subscribe(Pattern.compile("[A-Za-z1-9].+"));
     // WHILE LOOP TO POLL AND OBTAIN RECORDS
@@ -76,9 +77,9 @@ public class RunProducerAndConsumers {
         // INCREMENT MESSAGE RECEIVED COUNTER
         msg_received_counter.incrementAndGet();
         // PRINT OUT CONSUMER INFO
-        System.out.printf("%nConsumer Info %nConsumer Group: %s%n Consumer ID: %s%n Topic: %s%n Partition ID = %s%n Key = %s%n Value = %s%n"
+        System.out.printf("%nConsumer Info %nConsumer Group: %s%n Consumer ID: %s%n Topic: %s%n Header: Key = %s, Value = %s%n Partition ID = %s%n Key = %s%n Value = %s%n"
                 + " Offset = %s%n",
-            consumerGroup, consumerId, record.topic(), record.partition(), record.key(), record.value(), record.offset());
+            consumerGroup, consumerId, record.topic(), record.headers().iterator().next().key(), new String(record.headers().iterator().next().value()), record.partition(), record.key(), record.value(), record.offset());
       }
       // SYNCHRONOUS OFFSET COMMIT
       consumer.commitSync();
@@ -91,7 +92,7 @@ public class RunProducerAndConsumers {
 
   // SEND MESSAGE METHODS
   public static void sendMessages() {
-    // CREATE KAFKA PRODUCER AND SET PRODUCER PROPERTIES
+    // INITIALIZE KAFKA PRODUCER AND SET PRODUCER PROPERTIES
     KafkaProducer producer = new KafkaProducer<>(ProducerAndConsumerProperties.getProducerProperties());
     // INITIALIZE SCHEMA AND OBTAIN INSERTABLE GENERIC RECORD
     GenericRecord avroRecord = AvroSchemaRegistry.createSchema();
@@ -110,10 +111,16 @@ public class RunProducerAndConsumers {
         System.out.printf("%nSending Message%nTopic: %s%n Key: %s%n Value: %s%n Partition ID: %s%n", TOPIC_NAME2, key, avroRecord, partitionId);
 
         try{
+          // INITIALIZE PRODUCER RECORDS
+          ProducerRecord<String,GenericRecord> topic1Record = new ProducerRecord<>(TOPIC_NAME1, partitionId, Integer.toString(key), avroRecord);
+          ProducerRecord<String,GenericRecord> topic2Record = new ProducerRecord<>(TOPIC_NAME2, partitionId, Integer.toString(key), avroRecord);
+          // ADD CUSTOM HEADERS TO RECORDS
+          topic1Record.headers().add("City", ("Atlanta").getBytes());
+          topic2Record.headers().add("City", ("Dallas").getBytes());
           // SEND RECORD
-          producer.send(new ProducerRecord<>(TOPIC_NAME1, partitionId, Integer.toString(key), avroRecord));
+          producer.send(topic1Record);
           // SEND RECORD
-          producer.send(new ProducerRecord<>(TOPIC_NAME2, partitionId, Integer.toString(key), avroRecord));
+          producer.send(topic2Record);
         } catch (SerializationException e) {
           System.out.println("Error in sending message");
           e.printStackTrace();
