@@ -16,10 +16,7 @@ kafka-topics.bat --describe --bootstrap-server localhost:9092 --topic <TOPIC_NAM
 ```
 
 ## Code Functionality
-- The Program Generates Random Temperatures between 0 and 100, and sends their data to a specific partition with the value being the temperature and the time it was recorded
-### - Read Data to Specific Partition
-- Reads Custom Header Values
-
+- The Program Generates Random Temperatures between 0 and 100, and sends their data to a specific Topic along with the temperature and the time it was recorded
 ### - Change number of partitions for a specific topic
 ### - Send Producer Data to Consumers of different Groups
 
