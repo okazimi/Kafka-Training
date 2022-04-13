@@ -23,7 +23,7 @@ kafka-topics.bat --describe --bootstrap-server localhost:9092 --topic <TOPIC_NAM
 ### - Change number of partitions for a specific topic
 ### - Send Producer Data to Consumers of different Groups
 
-## Running Avro Topics Consumer/Producer Via Docker
+## Running Avro Topics Consumer/Producer With Docker
 ### Execution Process
 #### In IDE
 1. Set Run Configuration to *Docker*
