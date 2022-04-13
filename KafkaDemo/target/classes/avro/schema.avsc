@@ -1,0 +1,10 @@
+{
+  "type": "record",
+  "name": "AvroRecord",
+  "namespace": "generatedRecords",
+  "fields": [
+    {"name": "TemperatureRecorded", "type": "string"},
+    {"name": "TimeRecorded", "type": "string"},
+    {"name": "Temperature", "type": "int"}
+  ]
+}
