@@ -7,7 +7,11 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://packages.confluent.io/maven/"
+    }
 }
+
 
 dependencies {
     // https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients
@@ -19,7 +23,16 @@ dependencies {
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
     implementation 'org.slf4j:slf4j-simple:1.7.36'
 
+    // https://mvnrepository.com/artifact/org.apache.avro/avro
+    implementation 'org.apache.avro:avro:1.11.0'
+
+    //https://mvnrepository.com/artifact/io.confluent/kafka-avro-serializer
+    implementation group: 'io.confluent', name: 'kafka-avro-serializer', version: '5.5.0'
+
+
 }
+
+
 
 test {
     useJUnitPlatform()

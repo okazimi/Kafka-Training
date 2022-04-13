@@ -1,36 +1,35 @@
 package producer;
 
-import configuation.allConfigs;
+import avero.AvroConsumer;
 import consumer.Consumer;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.admin.NewTopic;
-import org.apache.kafka.clients.producer.*;
+import org.apache.kafka.clients.producer.Callback;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import configuation.allConfigs;
 
+import java.util.Properties;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
-public class Producer {
+public class avroProducer {
 
     private static final Logger log = LoggerFactory.getLogger(Consumer.class.getSimpleName());
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
-        //create topic, create partitions, then create replication factor, can also send to a specific partition by using
-        // name,partition,key,replication factor
-        NewTopic newTopic = new NewTopic("new_temperature_8", 3, (short) 2);
-        NewTopic newTopic2 = new NewTopic("wednesdayFunDay", 3, (short) 2);
+        NewTopic newTopic = new NewTopic("topicAvero_5", 3, (short) 1);
+        NewTopic newTopic2 = new NewTopic("topicAvero_6", 3, (short) 1);
 
-        log.debug("The temperature producer");
+        Properties props = allConfigs.getAvroProducerProperties();
 
-        //create producer properties
-        Properties props = allConfigs.getProducerProps();
+        KafkaProducer<String, GenericRecord> producer = new KafkaProducer<>(props);
 
-        //create producer
-        KafkaProducer<String, String> producer = new KafkaProducer<>(props);
-
-        //check to see if topic exists
         allConfigs.createTopic(newTopic);
         allConfigs.createTopic(newTopic2);
 
@@ -46,17 +45,22 @@ public class Producer {
             //generate numbers from 0 to 100
             int randTemp = rand.nextInt(temp);
 
+            GenericRecord avroRecord = AvroConsumer.avroRecord();
+            avroRecord.put("f1", " : " +randTemp);
+
+            GenericRecord averRecord_2 = AvroConsumer.avroRecord();
+            averRecord_2.put("f1"," : " + i );
+
             //create a producer record
-            ProducerRecord<String, String> producerRecord =
-                    new ProducerRecord<String, String>(newTopic.name(),"temperature is " + randTemp + " degrees");
+            ProducerRecord<String, GenericRecord> producerRecord =
+                    new ProducerRecord<>(newTopic.name(),avroRecord);
 
             //create second producer record
-            ProducerRecord<String, String> producerRecord1 =
-                    new ProducerRecord<String, String>(newTopic2.name(), "testing the new topic: " + i);
+            ProducerRecord<String, GenericRecord> producerRecord1 =
+                    new ProducerRecord<>(newTopic2.name(), averRecord_2);
 
             //creating custom headers
-            producerRecord.headers()
-                    .add("one", "temperature".getBytes());
+            producerRecord.headers().add("one", "temperature".getBytes());
 
             producer.send(producerRecord, new Callback()
             {
@@ -66,11 +70,11 @@ public class Producer {
                     if(e == null)
                     {
                         log.info("Reciceved new temperature data \n" +
-                                 "topic: " + metadata.topic() + "\n" +
-                                 "value: " + producerRecord.value() + "\n" +
-                                 "Partition: " + metadata.partition() + "\n" +
-                                 "Offset: " + metadata.timestamp() + "\n" +
-                                 "Headers: " + new String(producerRecord.headers().iterator().next().value()));
+                                "topic: " + metadata.topic() + "\n" +
+                                "value: " + producerRecord.value() + "\n" +
+                                "Partition: " + metadata.partition() + "\n" +
+                                "Offset: " + metadata.timestamp() + "\n" +
+                                "Headers: " + new String(producerRecord.headers().iterator().next().value()));
                     }
                 }
             });
@@ -87,7 +91,7 @@ public class Producer {
                                 "value: " + producerRecord1.value() + "\n" +
                                 "Partition: " + metadata.partition() + "\n" +
                                 "Offset: " + metadata.timestamp());
-                                //"Headers: " + new String(producerRecord1.headers().iterator().next().value()));
+                        //"Headers: " + new String(producerRecord1.headers().iterator().next().value()));
                     }
                 }
             });
@@ -107,6 +111,5 @@ public class Producer {
         //flush and close
         producer.close();
     }
-
 
 }

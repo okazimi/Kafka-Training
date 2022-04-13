@@ -1,7 +1,9 @@
-package MultiConsumerThread;
-import configuation.allConfigs;
+package avero;
 
-import consumer.Consumer;
+import configuation.allConfigs;
+import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -16,11 +18,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
 
-public class ThreadConsumer {
-    //logger
-    private static final Logger log = LoggerFactory.getLogger(Consumer.class.getSimpleName());
+public class AvroConsumer {
+    public static final Logger log = LoggerFactory.getLogger(AvroConsumer.class.getSimpleName());
 
     public static void main(String[] args) {
         try
@@ -72,40 +72,59 @@ public class ThreadConsumer {
         executorService.awaitTermination(10, TimeUnit.MINUTES);
     }
 
-    //get configs
-    //start consumer
+    public static GenericRecord avroRecord(){
+
+        // CREATE SCHEMA
+        String schema = "{\"type\":\"record\"," +
+                "\"name\":\"myrecord\"," +
+                "\"fields\":[{\"name\":\"f1\",\"type\":\"string\",\"default\":\"Default value for field1 field\"}]}";
+        // INITIALIZE SCHEMA PARSER
+        Schema.Parser parser = new Schema.Parser();
+        // PASS SCHEMA TO SCHEMA PARSER AND OBTAIN PARSED SCHEMA
+        Schema parsedSchema = parser.parse(schema);
+        // INITIALIZE GENERIC RECORD
+        GenericRecord avroRecord = new GenericData.Record(parsedSchema);
+        // RETURN GENERIC RECORD
+        return avroRecord;
+
+    }
+
+
     public static void startConsumer(String consumerID, String consumerGroup) throws ExecutionException, InterruptedException {
         //------------------------add stuff------------------------------
-        NewTopic newTopic = new NewTopic("new_temperature_8", 3, (short) 2);
-        NewTopic newTopic2 = new NewTopic("wednesdayFunDay", 3, (short) 2);
+        //create topics
+        NewTopic averoTopic_1 = new NewTopic("topicAvero_5", 3, (short) 1);
+        NewTopic averoTopic_2 = new NewTopic("topicAvero_6", 3, (short) 1);
 
-        allConfigs.createTopic(newTopic);
-        allConfigs.createTopic(newTopic2);
+        //create topics if not create yet
+        //allConfigs.createTopic(averoTopic_1);
+        //allConfigs.createTopic(averoTopic_2);
 
-        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(allConfigs.getConsumerProps(consumerGroup));
+        //start consumer
+        KafkaConsumer<String, GenericRecord> consumer = new KafkaConsumer<>(allConfigs.getAvroConsumerProperties(consumerGroup));
 
-        //consumer.subscribe(Arrays.asList(newTopic.name(), newTopic2.name()));
+        consumer.subscribe(Arrays.asList(averoTopic_1.name(), averoTopic_2.name()));
         //when a new topic is created and matches pattern then have new consumer subscribe to topic
-        consumer.subscribe(Pattern.compile("(\\w*regex)"));
+        //consumer.subscribe(Pattern.compile("(\\w*regex)"));
 
-            while(true)
+        while(true)
+        {
+            ConsumerRecords<String, GenericRecord> consumerRecords = consumer.poll(Duration.ofMillis(1000));
+            for(ConsumerRecord<String, GenericRecord> record :consumerRecords)
             {
-                ConsumerRecords<String, String> consumerRecords = consumer.poll(Duration.ofMillis(1000));
-                for(ConsumerRecord<String, String> record :consumerRecords)
-                {
-                    //Header customHeader = record.headers().iterator().next();
-                    log.info(Thread.currentThread().getName() + "\n"
-                          + "Topic: " + record.topic() + "\n" +
-                            "Key: " + record.key() + "\n" +
-                            "Value: " + record.value() + "\n" +
-                            "Partition: " + record.partition() + "\n" +
-                            "Offset: " + record.offset() + "\n");
-                            //"Custom header: " + new String(customHeader.key()) + " Custom value: " + new String(customHeader.value()));
-                }
+                log.info(Thread.currentThread().getName() + "\n"
+                        + "Topic: " + record.topic() + "\n" +
+                        "Key: " + record.key() + "\n" +
+                        "Value: " + record.value() + "\n" +
+                        "Partition: " + record.partition() + "\n" +
+                        "Offset: " + record.offset() + "\n");
             }
-
         }
 
-
+    }
 
 }
+
+
+
+

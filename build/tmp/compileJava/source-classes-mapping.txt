@@ -1,5 +1,11 @@
+producer/avroProducer.java
+ producer.avroProducer
+ producer.avroProducer$1
+ producer.avroProducer$2
 consumer/ConsumerThree.java
  consumer.ConsumerThree
+avero/AvroConsumer.java
+ avero.AvroConsumer
 consumerGroup2/ConsumerGroup2.java
  consumerGroup2.ConsumerGroup2
 consumer/ConsumerTwo.java
