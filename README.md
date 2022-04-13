@@ -21,6 +21,28 @@ kafka-topics.bat --describe --bootstrap-server localhost:9092 --topic <TOPIC_NAM
 - Reads Custom Header Values
 
 ### - Change number of partitions for a specific topic
-
 ### - Send Producer Data to Consumers of different Groups
 
+## Running Avro Topics Consumer/Producer Via Docker
+### Execution Process
+#### In IDE
+1. Set Run Configuration to *Docker*
+  * Generate Docker Container
+2. Run Consumer
+  * Use Normal Run Configuration
+3. Run Producer
+  * Use Normal Run Configuration
+
+### To View Kafka Data
+```sh
+localhost:3030
+```
+
+### Avro Schema Configuration
+~~~~
+"fields": [
+  {"name": "firstField", "type": "string"},
+  {"name": "secondField", "type": "string"},
+  {"name": "thirdField", "type": "int"}
+]
+~~~~
