@@ -24,11 +24,11 @@ kafka-topics.bat --describe --bootstrap-server localhost:9092 --topic <TOPIC_NAM
 ### Execution Process
 #### In IDE
 1. Set Run Configuration to *Docker*
-  * Generate Docker Container
+   * Generate Docker Container
 2. Run Consumer
-  * Use Normal Run Configuration
+   * Use Normal Run Configuration
 3. Run Producer
-  * Use Normal Run Configuration
+   * Use Normal Run Configuration
 
 ### To View Kafka Data
 ```sh
