@@ -1,7 +1,7 @@
-C:\Users\955444\KafkaProject\src\main\java\producers\AvroProducer.java
-C:\Users\955444\KafkaProject\src\main\java\properties\HelperClass.java
-C:\Users\955444\KafkaProject\src\main\java\consumers\Consumer.java
-C:\Users\955444\KafkaProject\src\main\java\producers\Producer.java
-C:\Users\955444\KafkaProject\target\generated-sources\avro\com\example\TestRecord.java
-C:\Users\955444\KafkaProject\src\main\java\consumers\AvroConsumer.java
-C:\Users\955444\KafkaProject\src\main\java\consumers\MultithreadedConsumer.java
+C:\Users\955444\KafkaProject\V1-Schema-Project\src\main\java\consumers\Consumer.java
+C:\Users\955444\KafkaProject\V1-Schema-Project\src\main\java\producers\Producer.java
+C:\Users\955444\KafkaProject\V1-Schema-Project\target\generated-sources\avro\com\example\TestRecord.java
+C:\Users\955444\KafkaProject\V1-Schema-Project\src\main\java\consumers\AvroConsumer.java
+C:\Users\955444\KafkaProject\V1-Schema-Project\src\main\java\properties\HelperClass.java
+C:\Users\955444\KafkaProject\V1-Schema-Project\src\main\java\consumers\MultithreadedConsumer.java
+C:\Users\955444\KafkaProject\V1-Schema-Project\src\main\java\producers\AvroProducer.java

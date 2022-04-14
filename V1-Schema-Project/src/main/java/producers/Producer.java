@@ -1,15 +1,11 @@
 package producers;
 
-import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import properties.HelperClass;
 
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 

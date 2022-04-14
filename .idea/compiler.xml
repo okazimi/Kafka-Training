@@ -6,9 +6,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="KafkaProject" />
+        <module name="V2-Schema-Project" />
         <module name="V1-Schema-Project" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="KafkaProject" target="1.5" />
+      <module name="untitled" target="8" />
+      <module name="V1-Schema-Project" target="8" />
+      <module name="V2-Schema-Project" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
