@@ -1,0 +1,5 @@
+properties\HelperClass.class
+com\example\TestRecord.class
+com\example\TestRecord$Builder.class
+producers\AvroProducerV2.class
+com\example\TestRecord$1.class

@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "name": "TestRecord",
+  "namespace": "com.example",
+  "version": 2,
+  "fields": [
+    {"name": "firstFieldV2", "type": "string", "default": "default"},
+    {"name": "secondField", "type": "int", "default": 1},
+    {"name": "thirdField", "type": "string", "default": "wawaweewa"}
+  ]
+}
