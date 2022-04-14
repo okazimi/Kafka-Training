@@ -1,2 +1,2 @@
 # Kafka-Training
-Cognizant Kafka Training with Manish
+Kafka Training with Manish
