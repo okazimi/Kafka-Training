@@ -1,5 +1,5 @@
 # Kafka-Training
-- Cognizant Kafka Training with Manish
+- <UNNAMED COMPANY> Kafka Training with Manish
 
 ## Kafka Commands
 - Start Zookeeper
