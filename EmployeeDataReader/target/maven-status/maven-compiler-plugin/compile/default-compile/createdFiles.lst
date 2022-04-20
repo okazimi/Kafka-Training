@@ -1,0 +1,9 @@
+employee\producer\controller\EmployeeController.class
+employee\producer\repository\EmployeeRepository.class
+employee\producer\kafka\Producer.class
+employee\producer\EmployeeDataProducer.class
+org\avro\EmployeeAvroRecord$Builder.class
+org\avro\EmployeeAvroRecord.class
+employee\producer\model\Employee.class
+employee\producer\service\EmployeeService.class
+org\avro\EmployeeAvroRecord$1.class
