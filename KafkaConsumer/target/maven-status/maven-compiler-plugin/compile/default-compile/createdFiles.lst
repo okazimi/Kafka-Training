@@ -1,0 +1,9 @@
+com\employeeINFO\EmployeeAvroRecord$Builder.class
+com\example\demo\repository\EmployeeConsumer.class
+com\example\demo\configuration\allConfigs.class
+com\example\demo\controller\ConsumerController.class
+com\example\demo\model\Employee.class
+com\employeeINFO\EmployeeAvroRecord$1.class
+com\employeeINFO\EmployeeAvroRecord.class
+com\example\demo\CqrsConsumerApplication.class
+com\example\demo\service\ConsumerService.class

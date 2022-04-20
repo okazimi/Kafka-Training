@@ -1,0 +1,10 @@
+com\employeeINFO\EmployeeAvroRecord$Builder.class
+com\example\demo\configuration\allConfigs.class
+com\example\demo\CqrsProducerApplication.class
+com\example\demo\model\Employee.class
+com\employeeINFO\EmployeeAvroRecord$1.class
+com\employeeINFO\EmployeeAvroRecord.class
+com\example\demo\service\EmployeeService.class
+com\example\demo\controller\ProducerController.class
+com\example\demo\repository\ProducerRepository.class
+com\example\demo\service\EmployeeService$1.class

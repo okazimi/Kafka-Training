@@ -1,0 +1,9 @@
+{
+  "type": "record",
+  "namespace": "com.employeeINFO",
+  "name": "EmployeeAvroRecord",
+  "fields": [
+    {"name" : "empName", "type": "string"},
+    {"name":  "empId", "type":  "int"}
+  ]
+}
