@@ -43,3 +43,35 @@ localhost:3030
     {"name": "Temperature", "type": "int"}
 ]
 ~~~~
+  
+## CQRS Postman Commands
+### EmployeeProducer Commands (Port 8088)
+#### Add Employee (Post)
+  ```sh
+  localhost:8088/employee/add
+  ```
+#### Update Employee - Found In DB (Put)
+  ```sh
+  localhost:8088/employee/update?empid=18&name=Paul Smith
+  ```
+#### Update Employee - Not Found In DB (Put)
+  ```sh
+  localhost:8088/employee/update?empid=30&name=Paul Smith
+  ```
+#### SyncEmployees (Get)
+  ```sh
+  localhost:8088/employee/sync
+  ```
+### EmployeeConsumer Commands (Port 8071)
+#### Find All (Get)
+  ```sh
+  localhost:8071/employee/
+  ```
+#### Find Employee - Found In DB (Get)
+  ```sh
+  localhost:8071/employee/findByID/?empid=1
+  ```
+#### Find Employee - Not Found In DB (Get)
+  ```sh
+  localhost:8071/employee/findByID/?empid=-1
+  ```
