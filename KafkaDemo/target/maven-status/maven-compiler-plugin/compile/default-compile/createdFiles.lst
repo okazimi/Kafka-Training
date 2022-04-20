@@ -1,8 +1,0 @@
-generatedRecords\AvroRecord.class
-consumers\AvroConsumer.class
-generatedRecords\AvroRecord$Builder.class
-configs\ConfigGenerator.class
-consumers\ConsumerGroup.class
-producers\Producer.class
-generatedRecords\AvroRecord$1.class
-producers\AvroProducer.class
