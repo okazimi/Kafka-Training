@@ -1,0 +1,16 @@
+{ "namespace": "org.avro",
+  "type": "record",
+  "name": "EmployeeAvroRecord",
+  "fields": [
+    {
+      "name": "EmpId",
+      "type": "int",
+      "default": -1
+    },
+    {
+        "name": "EmpName",
+        "type": "string",
+        "default": "null"
+    }
+  ]
+}
