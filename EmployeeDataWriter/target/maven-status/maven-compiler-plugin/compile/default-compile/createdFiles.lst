@@ -1,0 +1,8 @@
+org\avro\EmployeeAvroRecord$Builder.class
+model\Employee.class
+org\avro\EmployeeAvroRecord.class
+EmployeeDataWriterApplication.class
+service\EmployeeService.class
+controller\EmployeeController.class
+org\avro\EmployeeAvroRecord$1.class
+repository\EmployeeRepository.class
