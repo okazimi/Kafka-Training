@@ -35,17 +35,17 @@ public class AvroProducerV2 {
         // TestRecord is generated using the test.avsc schema file
         TestRecord testRecord0 = TestRecord.newBuilder()
                 .setFirstFieldV2("V2Producer")
-                .setSecondField(1)
+                .setSecondField(20)
                 .setThirdField("Oh Yeah").build();
         TestRecord testRecord1 = TestRecord.newBuilder()
                 .setFirstFieldV2("V2Producersfds")
-                .setSecondField(2)
+                .setSecondField(21)
                 .setThirdField("Let's go").build();
 
         // Create genericRecord to test
         GenericRecord genericRecord = new GenericRecordBuilder(new Schema.Parser().parse(new File("src/main/resources/avro/test.avsc")))
                 .set("firstFieldV2", "oogaBooga")
-                .set("secondField", 3)
+                .set("secondField", 22)
                 .set("thirdField", "generic").build();
 
         // Create producer records using Avro records

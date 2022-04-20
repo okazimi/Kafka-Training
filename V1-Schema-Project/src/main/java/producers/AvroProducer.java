@@ -1,6 +1,7 @@
 package producers;
 
 import com.example.TestRecord;
+import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.generic.GenericRecordBuilder;
@@ -34,10 +35,10 @@ public class AvroProducer {
         // Create Avro records using TestRecord
         // TestRecord is generated using the test.avsc schema file
         TestRecord testRecord0 = TestRecord.newBuilder()
-                .setFirstField("v2")
+                .setFirstField("v1")
                 .setSecondField(1).build();
         TestRecord testRecord1 = TestRecord.newBuilder()
-                .setFirstField("v2")
+                .setFirstField("v1")
                 .setSecondField(2).build();
 
         // Create genericRecord to test

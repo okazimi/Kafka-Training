@@ -1,0 +1,10 @@
+{
+  "type": "record",
+  "name": "EmployeeAvroRecord",
+  "namespace": "com.example",
+  "version": 1,
+  "fields": [
+    {"name": "EmpId", "type": "long"},
+    {"name": "EmpName", "type": "string", "default": "Placeholder Name"}
+  ]
+}
